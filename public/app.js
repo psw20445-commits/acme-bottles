@@ -55,6 +55,7 @@ async function safeLoadAll() {
   try {
     await loadAll();
   } catch (error) {
+    console.error("Failed to load dashboard data:", error);
     toast(`Unable to load dashboard data: ${error.message}`);
   }
 }
