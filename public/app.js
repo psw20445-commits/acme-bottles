@@ -308,7 +308,7 @@ function toast(message) {
   const toastElement = document.getElementById("toast");
   toastElement.textContent = message;
   toastElement.classList.add("show");
-  setTimeout(() => toastElement.classList.remove("show"), 2200);
+  setTimeout(() => toastElement.classList.remove("show"), 3500);
 }
 
 function escapeHtml(value) {
