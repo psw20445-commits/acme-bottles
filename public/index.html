@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ACME Bottles Production Manager</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">A</div>
+        <div>
+          <strong>ACME Bottles</strong>
+          <span>Production Manager</span>
+        </div>
+      </div>
+      <nav>
+        <div class="nav-label">Dashboard</div>
+        <button class="nav-item active" data-page="production">Production Status</button>
+        <button class="nav-item" data-page="orders">Purchase Orders</button>
+        <button class="nav-item" data-page="supplies">Supplies</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><strong>ACME Bottles</strong><span id="breadcrumb">Production Status</span></div>
+        <span class="date-pill" id="planningDate">Planning date</span>
+      </header>
+
+      <section class="page active" id="page-production">
+        <div class="page-title">
+          <div>
+            <h1>Production Status</h1>
+            <p>Overview of all production orders and scheduling</p>
+          </div>
+          <button class="ghost-button" id="refreshProduction">Refresh</button>
+        </div>
+        <section>
+          <h2><span class="dot"></span>In Production Now <span class="slot-count" id="productionSlots">(0/2 slots)</span></h2>
+          <div class="line-grid" id="inProduction"></div>
+        </section>
+        <section>
+          <h2>All Purchase Orders</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>PO Number</th>
+                  <th>Customer</th>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Order Date</th>
+                  <th>Expected Start</th>
+                  <th>ETA</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="productionTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="page-orders">
+        <div class="page-title">
+          <div>
+            <h1>Purchase Orders</h1>
+            <p><span id="orderCount">0</span> total orders</p>
+          </div>
+          <button class="primary-button" data-open-modal="orderModal">+ Create New PO</button>
+        </div>
+        <input class="search" id="orderSearch" placeholder="Search by PO number, customer, or product..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>PO Number</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Order Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="page" id="page-supplies">
+        <div class="page-title">
+          <div>
+            <h1>Supplies</h1>
+            <p>Manage raw material supply orders</p>
+          </div>
+          <button class="primary-button" data-open-modal="supplyModal">+ Create New Order</button>
+        </div>
+        <div class="inventory-grid" id="inventoryCards"></div>
+        <div class="section-heading">
+          <h2>Supply Orders</h2>
+          <span id="supplyCount">0 orders</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Material</th>
+                <th>Quantity</th>
+                <th>Supplier</th>
+                <th>Tracking</th>
+                <th>Order Date</th>
+                <th>ETA</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="suppliesTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="orderModal" aria-hidden="true">
+      <form class="modal" id="orderForm">
+        <button class="close" type="button" data-close-modal>×</button>
+        <h2>Create New Purchase Order</h2>
+        <p>Fill in the details below</p>
+        <label>Customer Name *<input name="customer_name" required placeholder="e.g. AquaPure Beverages" /></label>
+        <label>Product *
+          <select name="product_type" required></select>
+        </label>
+        <label>Quantity (units) *<input name="quantity" required type="number" min="1" placeholder="50000" /></label>
+        <label>Notes<textarea name="notes" placeholder="Any special requirements..."></textarea></label>
+        <div class="modal-actions">
+          <button type="button" class="ghost-button" data-close-modal>Cancel</button>
+          <button type="submit" class="primary-button">Create PO</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-backdrop" id="supplyModal" aria-hidden="true">
+      <form class="modal" id="supplyForm">
+        <button class="close" type="button" data-close-modal>×</button>
+        <h2>Create New Supply Order</h2>
+        <p>Fill in the order details</p>
+        <div class="two-col">
+          <label>Material *<select name="material_type" required></select></label>
+          <label>Quantity (kg) *<input name="quantity_kg" required type="number" step="0.1" min="0.1" placeholder="5000" /></label>
+        </div>
+        <label>Supplier Name<input name="supplier_name" placeholder="e.g. Global Resin Co." /></label>
+        <div class="two-col">
+          <label>Tracking Number *<input name="tracking_number" required placeholder="TRK-00123" /></label>
+          <label>ETA *<input name="eta" required type="date" /></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="ghost-button" data-close-modal>Cancel</button>
+          <button type="submit" class="primary-button">Place Order</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
